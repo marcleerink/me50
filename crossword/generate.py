@@ -3,16 +3,14 @@ import sys
 from crossword import *
 
 
-class CrosswordCreator():
-
+class CrosswordCreator:
     def __init__(self, crossword):
         """
         Create new CSP crossword generate.
         """
         self.crossword = crossword
         self.domains = {
-            var: self.crossword.words.copy()
-            for var in self.crossword.variables
+            var: self.crossword.words.copy() for var in self.crossword.variables
         }
 
     def letter_grid(self, assignment):
@@ -49,6 +47,7 @@ class CrosswordCreator():
         Save crossword assignment to an image file.
         """
         from PIL import Image, ImageDraw, ImageFont
+
         cell_size = 100
         cell_border = 2
         interior_size = cell_size - 2 * cell_border
@@ -57,30 +56,33 @@ class CrosswordCreator():
         # Create a blank canvas
         img = Image.new(
             "RGBA",
-            (self.crossword.width * cell_size,
-             self.crossword.height * cell_size),
-            "black"
+            (self.crossword.width * cell_size, self.crossword.height * cell_size),
+            "black",
         )
         font = ImageFont.truetype("assets/fonts/OpenSans-Regular.ttf", 80)
         draw = ImageDraw.Draw(img)
 
         for i in range(self.crossword.height):
             for j in range(self.crossword.width):
-
                 rect = [
-                    (j * cell_size + cell_border,
-                     i * cell_size + cell_border),
-                    ((j + 1) * cell_size - cell_border,
-                     (i + 1) * cell_size - cell_border)
+                    (j * cell_size + cell_border, i * cell_size + cell_border),
+                    (
+                        (j + 1) * cell_size - cell_border,
+                        (i + 1) * cell_size - cell_border,
+                    ),
                 ]
                 if self.crossword.structure[i][j]:
                     draw.rectangle(rect, fill="white")
                     if letters[i][j]:
                         w, h = draw.textsize(letters[i][j], font=font)
                         draw.text(
-                            (rect[0][0] + ((interior_size - w) / 2),
-                             rect[0][1] + ((interior_size - h) / 2) - 10),
-                            letters[i][j], fill="black", font=font
+                            (
+                                rect[0][0] + ((interior_size - w) / 2),
+                                rect[0][1] + ((interior_size - h) / 2) - 10,
+                            ),
+                            letters[i][j],
+                            fill="black",
+                            font=font,
                         )
 
         img.save(filename)
@@ -151,7 +153,6 @@ class CrosswordCreator():
 
         return True
 
-
     def assignment_complete(self, assignment):
         """
         Return True if `assignment` is complete (i.e., assigns a value to each
@@ -178,7 +179,6 @@ class CrosswordCreator():
 
         return True
 
-
     def order_domain_values(self, var, assignment):
         """
         Return a list of values in the domain of `var`, in order by
@@ -190,10 +190,13 @@ class CrosswordCreator():
         unassigned_neighbours = self.crossword.neighbors(var).difference(assignment)
         values = self.domains[var]
 
-        return sorted(values, key=lambda value: sum(
-            value not in self.domains[neighbor] for neighbor in unassigned_neighbours
-        ))
-
+        return sorted(
+            values,
+            key=lambda value: sum(
+                value not in self.domains[neighbor]
+                for neighbor in unassigned_neighbours
+            ),
+        )
 
     def select_unassigned_variable(self, assignment):
         """
@@ -207,8 +210,12 @@ class CrosswordCreator():
         unassigned = self.crossword.variables.difference(assignment)
 
         return min(
-            unassigned, key=lambda var: (
-            len(self.domains[var]), -len(self.crossword.neighbors(var))))
+            unassigned,
+            key=lambda var: (
+                len(self.domains[var]),
+                -len(self.crossword.neighbors(var)),
+            ),
+        )
 
     def backtrack(self, assignment):
         """
@@ -225,11 +232,9 @@ class CrosswordCreator():
         var = self.select_unassigned_variable(assignment)
 
         for value in self.order_domain_values(var, assignment):
-
             assignment[var] = value
 
             if self.consistent(assignment):
-
                 result = self.backtrack(assignment)
 
                 if result is not None:
@@ -241,7 +246,6 @@ class CrosswordCreator():
 
 
 def main():
-
     # Check usage
     if len(sys.argv) not in [3, 4]:
         sys.exit("Usage: python generate.py structure words [output]")
