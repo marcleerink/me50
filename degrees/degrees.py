@@ -1,5 +1,6 @@
 import csv
 import sys
+from collections import deque
 
 from util import Node, QueueFrontier
 
@@ -99,23 +100,18 @@ def shortest_path(source, target):
     # Initialize an empty explored set
     explored = set()
 
-    # Keep looping until solution found
-    while True:
-        # if no nodes left to explore, no solution
-        if frontier.empty():
-            return None
-
+    # Keep looping until solution found or frontier is empty
+    while not frontier.empty():
         # Remove the first node from the frontier
         node = frontier.remove()
-        print(node.state, node.action, target)
+
         # If node is the goal, then we have a solution
         if node.state == target:
-            path = []
+            path = deque()
             while node.parent is not None:
-                path.append((node.action, node.state))
+                path.appendleft((node.action, node.state))
                 node = node.parent
-            path.reverse()
-            return path
+            return list(path)
 
         # Mark node as explored
         explored.add(node.state)
@@ -126,6 +122,9 @@ def shortest_path(source, target):
             if not frontier.contains_state(person_id) and person_id not in explored:
                 child = Node(state=person_id, parent=node, action=movie_id)
                 frontier.add(child)
+
+    # No solution found
+    return None
 
 
 def person_id_for_name(name):
