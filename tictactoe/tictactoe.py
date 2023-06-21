@@ -1,9 +1,7 @@
-from copy import deepcopy
-
 """
 Tic Tac Toe Player
 """
-
+from copy import deepcopy
 
 X = "X"
 O = "O"
