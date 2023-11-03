@@ -155,15 +155,16 @@ class NimAI:
         options is an acceptable return value.
         """
         actions = Nim.available_actions(state)
-        if epsilon:
-            if random.random() < self.epsilon:
-                return random.choice(tuple(actions))
+        if epsilon and random.random() < self.epsilon:
+            return random.choice(tuple(actions))
 
         best = -math.inf
+        best_action = None
 
         for action in actions:
-            if self.get_q_value(state, action) > best:
-                best = self.get_q_value(state, action)
+            q_value = self.get_q_value(state, action)
+            if q_value > best:
+                best = q_value
                 best_action = action
 
         return best_action
@@ -276,5 +277,4 @@ def play(ai, human_player=None):
             print("GAME OVER")
             winner = "Human" if game.winner == human_player else "AI"
             print(f"Winner is {winner}")
-            return
             return
