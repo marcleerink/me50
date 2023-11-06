@@ -29,3 +29,7 @@ The minimax algorithm can be optimized by making use of alpha-beta pruning. This
 - If the value returned by max_value is less than the current v, then v is updated to this new value.
 - The beta value is then updated to be the minimum of the current beta or the new v.
 - If at any point beta becomes less than or equal to alpha, the function breaks out of the loop. This means that the minimizer has found a move that guarantees a value less than or equal to beta, and since the maximizer would never allow that (as the maximizer is trying to maximize the value), the remaining subtrees are pruned.
+
+### Depth First Search
+
+The minimax algorithm implemented used Depth First Search. The max_value and min_value functions call each other recusively, going deeper into the tree until they reach a terminal state. Once finished with one branch, they then backtrack to explore a different branch of the game.
