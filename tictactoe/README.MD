@@ -8,4 +8,4 @@ There are several ways to improve the code that i've written and reduce the numb
 
 ### Alpha-Beta Pruning
 
-The minimax algorithm can be optimized by making use of alpha-beta pruning. This reduces the number of nodes evaluated in the search tree by pruning brnaches that cannot possibly influence the final decision. This can be implemented with two variables, 'alpha' and 'beta, which represent the minimum score that the maximizing player is assuered of ('alpha') and the maximum score that the minimizing player is assured of ('beta').
+The minimax algorithm can be optimized by making use of alpha-beta pruning. This reduces the number of nodes evaluated in the search tree by pruning brnaches that cannot possibly influence the final decision. This can be implemented with two variables, 'alpha' and 'beta, which represent the minimum score that the maximizing player is assuered of ('alpha') and the maximum score that the minimizing player is assured of ('beta'). I've implemented this in the last version.
