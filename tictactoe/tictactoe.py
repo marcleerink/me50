@@ -6,6 +6,7 @@ from copy import deepcopy
 X = "X"
 O = "O"
 EMPTY = None
+STATES_EXPLORED = 0
 
 
 class InvalidActionError(Exception):
@@ -126,24 +127,34 @@ def utility(board):
         return 0
 
 
-def max_value(board):
+def max_value(board, alpha, beta):
+    global STATES_EXPLORED
+    STATES_EXPLORED += 1
     if terminal(board):
         return utility(board)
 
     v = -2
     for action in actions(board):
-        v = max(v, min_value(result(board, action)))
-
+        v = max(v, min_value(result(board, action), alpha, beta))
+        alpha = max(alpha, v)
+        if alpha >= beta:
+            break
     return v
 
 
-def min_value(board):
+def min_value(board, alpha, beta):
+    global STATES_EXPLORED
+    STATES_EXPLORED += 1
+
     if terminal(board):
         return utility(board)
 
     v = 2
     for action in actions(board):
-        v = min(v, max_value(result(board, action)))
+        v = min(v, max_value(result(board, action), alpha, beta))
+        beta = min(beta, v)
+        if beta <= alpha:
+            break
 
     return v
 
@@ -158,20 +169,26 @@ def minimax(board):
 
     if player(board) == X:
         best_score = -2
+        alpha = -2
+        beta = 2
         best_move = None
         for action in actions(board):
-            score = min_value(result(board, action))
+            score = min_value(result(board, action), alpha, beta)
             if score > best_score:
                 best_score = score
                 best_move = action
+            alpha = max(alpha, score)
 
     else:
         best_score = 2
         best_move = None
+        alpha = -2
+        beta = 2
         for action in actions(board):
-            score = max_value(result(board, action))
+            score = max_value(result(board, action), alpha, beta)
             if score < best_score:
                 best_score = score
                 best_move = action
-
+            beta = min(beta, score)
+    print("States explored: ", STATES_EXPLORED)
     return best_move
