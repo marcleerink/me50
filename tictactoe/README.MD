@@ -32,4 +32,4 @@ The minimax algorithm can be optimized by making use of alpha-beta pruning. This
 
 ### Depth First Search
 
-The minimax algorithm implemented used Depth First Search. The max_value and min_value functions call each other recusively, going deeper into the tree until they reach a terminal state. Once finished with one branch, they then backtrack to explore a different branch of the game.
+The minimax algorithm implemented uses Depth First Search. The max_value and min_value functions call each other recusively, going deeper into the tree until they reach a terminal state. Once finished with one branch, they then backtrack to explore a different branch of the game.
