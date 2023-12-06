@@ -2,6 +2,9 @@ import sys
 
 from crossword import *
 
+BACKTRACK_COUNTER = 0
+WORDS_TESTED = 0
+
 
 class CrosswordCreator:
     def __init__(self, crossword):
@@ -93,7 +96,7 @@ class CrosswordCreator:
         """
         self.enforce_node_consistency()
         self.ac3()
-        return self.backtrack(dict())
+        return self.backtrack_ac3(dict())
 
     def enforce_node_consistency(self):
         """
@@ -228,6 +231,9 @@ class CrosswordCreator:
 
         If no assignment is possible, return None.
         """
+        global BACKTRACK_COUNTER
+        global WORDS_TESTED
+        BACKTRACK_COUNTER += 1
         if self.assignment_complete(assignment):
             return assignment
 
@@ -235,12 +241,48 @@ class CrosswordCreator:
 
         for value in self.order_domain_values(var, assignment):
             assignment[var] = value
+            WORDS_TESTED += 1
 
             if self.consistent(assignment):
                 result = self.backtrack(assignment)
 
                 if result is not None:
                     return result
+
+            del assignment[var]
+
+        return None
+
+    def backtrack_ac3(self, assignment):
+        """
+        Using Backtracking Search with AC-3, take as input a partial assignment
+        for the crossword and return a complete assignment if possible to do so.
+
+        `assignment` is a mapping from variables (keys) to words (values).
+
+        If no assignment is possible, return None.
+        """
+
+        global BACKTRACK_COUNTER
+        global WORDS_TESTED
+        BACKTRACK_COUNTER += 1
+
+        if self.assignment_complete(assignment):
+            return assignment
+
+        var = self.select_unassigned_variable(assignment)
+
+        for value in self.order_domain_values(var, assignment):
+            assignment[var] = value
+            WORDS_TESTED += 1
+
+            if self.consistent(assignment):
+                self.ac3(
+                    [(other_var, var) for other_var in self.crossword.neighbors(var)]
+                )
+
+                if self.backtrack_ac3(assignment) is not None:
+                    return assignment
 
             del assignment[var]
 
@@ -266,6 +308,8 @@ def main():
     if assignment is None:
         print("No solution.")
     else:
+        print(f"Backtrack calls: {BACKTRACK_COUNTER}")
+        print(f"Words tested: {WORDS_TESTED}")
         creator.print(assignment)
         if output:
             creator.save(assignment, output)
