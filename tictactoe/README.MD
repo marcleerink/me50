@@ -12,6 +12,13 @@ The minimax algorithm can be optimized by making use of alpha-beta pruning. This
 
 #### This is how it works in my code:
 
+##### Minimax function
+
+The minimax function decides the best move.
+It calls max_value if it's X's turn or min_value if it's O's turn.
+These functions recursively call each other and themselves, evaluating the board until terminal states are reached.
+Alpha-beta pruning is used here to cut off unnecessary evaluations.
+
 ##### In the max_value function:
 
 - The function is trying to find the maximum score the maximizer can achieve.

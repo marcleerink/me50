@@ -17,6 +17,8 @@ def initial_state():
     """
     Returns starting state of the board.
     """
+    global STATES_EXPLORED
+    STATES_EXPLORED = 0
     return [[EMPTY, EMPTY, EMPTY], [EMPTY, EMPTY, EMPTY], [EMPTY, EMPTY, EMPTY]]
 
 
