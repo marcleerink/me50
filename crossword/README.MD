@@ -1,5 +1,29 @@
 # Crossword
 
+I applied this ai using a constraint satisfaction problem(CSP) model with node consistency, arc consistency and backtracking search
+
+### Node Consistency
+
+When all the values in a viarbles domain satisfy the variable's unary constraints.
+
+### Arc Consistency
+
+when all the values in a variable's domain satisfy the variable's binary constraints.
+To make X arc-consistent with respect to Y, remove elements from X's domain until every choice for X has a possible choice for Y
+
+### Backtracking Search
+
+Backtracking Search is a recursive algorithm often employed to solve constraint satisfaction problems. Here values are assigned to each variable from the variable's domain, one at a time.
+If the assignment is consistent with the conditions of the problem being solved, Backtracking Search is recursively called on the CSP until all variables are assigned. If all variable are successfully assigned, the problem has been solved and the solution is returned.
+If a variable is unable to be assigned consistently, the algorithm then returns to a previous variable and changes its assignment to another from its domain, until all options are exhausted. If all options for all variables are exhausted and no solution found, there is no solution to the csp.
+
+### Improvements to Backtracking
+
+Several improvements can be made to backtracking search to improve the efficiency of the algorithm. The one I didn't apply yet is:
+
+Maintaining arc consistency - Whenever a new assignment is made to X, calls the AC-3 algorithm for all arcs (Y, X) where Y is a neighbor of (has binary constraint with) X.
+This removes values from the domain of neighbouring variables of X once X is assigned, quickly reducing the state space to search for a solution.
+
 ## Reflection
 
 ### Application of Hill Climbing to Crossword Puzzle Generation:

@@ -190,6 +190,7 @@ class CrosswordCreator:
         unassigned_neighbours = self.crossword.neighbors(var).difference(assignment)
         values = self.domains[var]
 
+        # least-constraining values heuristic
         return sorted(
             values,
             key=lambda value: sum(
@@ -209,6 +210,7 @@ class CrosswordCreator:
 
         unassigned = self.crossword.variables.difference(assignment)
 
+        # sort by minimum remaining values in domain and then by highest degree
         return min(
             unassigned,
             key=lambda var: (
